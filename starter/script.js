@@ -7,6 +7,9 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const section1 = document.querySelector('#section--1');
+const buttonLearnMore = document.querySelector('.btn--scroll-to');
+const navLinks = document.querySelector('.nav__links');
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -29,6 +32,26 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+buttonLearnMore.addEventListener('click', function () {
+  section1.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+
+
+
+//page navigation
+// navLinksList.forEach(function (li) {
+//   li.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const id=this.getAttribute("href")
+//     document.querySelector(id).scrollIntoView({behavior: 'smooth', block: 'start' })
+//   });
+// });
+navLinks.addEventListener("click",function(e){
+  e.preventDefault()
+  document.querySelector(e.target.getAttribute("href"))?.scrollIntoView({behavior: 'smooth', block: 'center' })    
+})
 
 // const message = document.createElement('div');
 // message.classList.add('cookie-message');
@@ -53,26 +76,31 @@ document.addEventListener('keydown', function (e) {
 // logo.classList.toggle("twitter-link",true)
 // console.log(logo.classList);
 
-const section = document.querySelector('#section--1');
-const button = document.querySelector('.btn--scroll-to');
-console.log(button);
-// button.addEventListener('click', function () {
-//   section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-// });
-
 // button.addEventListener('mouseenter', function () {
 //   alert('lmaoo');
-  
+
 // });
 
+// const h1=document.querySelector("h1");
+// const alertH1=function(){
+//   alert("hiii")
+//   h1.removeEventListener('mouseenter', alertH1)
+// };
 
+// h1.addEventListener("mouseenter",alertH1);
 
+// document.querySelector('.nav').addEventListener("click", function(e){
+//   this.style.backgroundColor=" #00FF00"
+//   console.log(e.target);
+//   console.log(e.currentTarget);
 
-const h1=document.querySelector("h1");
-const alertH1=function(){
-  alert("hiii")
-  h1.removeEventListener('mouseenter', alertH1)
-};
+// })
+// document.querySelector('.nav__links').addEventListener("click", function(e){
+//   this.style.backgroundColor=" #ff0000"
+// });
+//  document.querySelector('.nav__link').addEventListener("click", function(e){
+//   this.style.backgroundColor=" #0000FF"
+//   e.stopPropagation();
+// });
 
-h1.addEventListener("mouseenter",alertH1);
 
