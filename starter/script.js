@@ -104,3 +104,36 @@ navLinks.addEventListener("click",function(e){
 // });
 
 
+// const h1=document.querySelector("h1")
+// console.log(h1.querySelector('.highlight'));
+// console.log(h1.childNodes);
+// console.log(h1.children);
+// console.log(h1.firstElementChild);
+
+// console.log(h1.parentElement);
+// console.log(h1.parentNode);
+
+// console.log( );
+
+const tabsAll=document.querySelector(".operations__tab-container")
+
+tabsAll.addEventListener("click", function(e){
+  e.preventDefault()
+  const clicked=e.target.closest()
+  if(e.target.type!=="submit"){
+
+}
+const currentActive=tabsAll.querySelector(".operations__tab--active")
+currentActive.classList.remove("operations__tab--active")
+const newActive=e.target
+newActive.classList.add("operations__tab--active")
+const newActiveNumber=([...newActive.classList].slice(-2, -1)
+[0].slice(-1));
+const currentActiveContent=tabsAll.parentElement.querySelector('.operations__content--active');
+[...tabsAll.parentElement.children].forEach(function(el){
+  if(([...el.classList][1])?.slice(-1)===newActiveNumber){
+    currentActiveContent.classList.remove("operations__content--active");
+    el.classList.add("operations__content--active")
+  }
+})
+})
