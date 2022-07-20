@@ -10,6 +10,9 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const section1 = document.querySelector('#section--1');
 const buttonLearnMore = document.querySelector('.btn--scroll-to');
 const navLinks = document.querySelector('.nav__links');
+const tabsAll = document.querySelector('.operations__tab-container');
+const nav=document.querySelector(".nav");
+const header=document.querySelector(".header")
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -37,9 +40,6 @@ buttonLearnMore.addEventListener('click', function () {
   section1.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
-
-
-
 //page navigation
 // navLinksList.forEach(function (li) {
 //   li.addEventListener('click', function (e) {
@@ -48,10 +48,65 @@ buttonLearnMore.addEventListener('click', function () {
 //     document.querySelector(id).scrollIntoView({behavior: 'smooth', block: 'start' })
 //   });
 // });
-navLinks.addEventListener("click",function(e){
-  e.preventDefault()
-  document.querySelector(e.target.getAttribute("href"))?.scrollIntoView({behavior: 'smooth', block: 'center' })    
+navLinks.addEventListener('click', function (e) {
+  e.preventDefault();
+  document
+    .querySelector(e.target.getAttribute('href'))
+    ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+
+//tabs
+tabsAll.addEventListener('click', function (e) {
+  e.preventDefault();
+  const clicked = e.target.closest('.operations__tab');
+
+  if (!clicked) return;
+  const currentActive = tabsAll.querySelector('.operations__tab--active');
+  currentActive.classList.remove('operations__tab--active');
+  const newActive = clicked;
+  newActive.classList.add('operations__tab--active');
+  const newActiveNumber = newActive.getAttribute('data-tab');
+  [...tabsAll.parentElement.children].forEach(function (el) {
+    el.classList.remove('operations__content--active');
+  });
+  const clickedContent=tabsAll.parentElement.querySelector(`.operations__content--${newActiveNumber}`)
+  clickedContent.classList.add("operations__content--active")
+});
+
+//navlink opacity
+const handleOverNav=function(e){
+  if(e.target.classList.contains("nav__link")){
+    const link=e.target;
+    const allLinks=link.closest(".nav").querySelectorAll(".nav__link ")
+    const logo=link.closest('.nav').querySelector(".nav__logo")
+    allLinks.forEach(function(li){
+      if(li!==link) li.style.opacity=this
+    })
+    logo.style.opacity=this
+    }
+}
+
+nav.addEventListener("mouseover", handleOverNav.bind(.5));
+nav.addEventListener("mouseout",  handleOverNav.bind(1));
+
+//sticky nav
+const stickyNav=function(entries,observer){
+const entry=entries[0]; 
+  if(!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky')
+}
+
+
+
+const headerObserver=new IntersectionObserver(stickyNav,{
+  root:null,
+  threshold:0,
+  rootMargin:`-${nav.getBoundingClientRect().height}px`
 })
+headerObserver.observe(header)
+
+
 
 // const message = document.createElement('div');
 // message.classList.add('cookie-message');
@@ -103,7 +158,6 @@ navLinks.addEventListener("click",function(e){
 //   e.stopPropagation();
 // });
 
-
 // const h1=document.querySelector("h1")
 // console.log(h1.querySelector('.highlight'));
 // console.log(h1.childNodes);
@@ -115,25 +169,3 @@ navLinks.addEventListener("click",function(e){
 
 // console.log( );
 
-const tabsAll=document.querySelector(".operations__tab-container")
-
-tabsAll.addEventListener("click", function(e){
-  e.preventDefault()
-  const clicked=e.target.closest()
-  if(e.target.type!=="submit"){
-
-}
-const currentActive=tabsAll.querySelector(".operations__tab--active")
-currentActive.classList.remove("operations__tab--active")
-const newActive=e.target
-newActive.classList.add("operations__tab--active")
-const newActiveNumber=([...newActive.classList].slice(-2, -1)
-[0].slice(-1));
-const currentActiveContent=tabsAll.parentElement.querySelector('.operations__content--active');
-[...tabsAll.parentElement.children].forEach(function(el){
-  if(([...el.classList][1])?.slice(-1)===newActiveNumber){
-    currentActiveContent.classList.remove("operations__content--active");
-    el.classList.add("operations__content--active")
-  }
-})
-})
