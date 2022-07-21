@@ -11,11 +11,10 @@ const section1 = document.querySelector('#section--1');
 const buttonLearnMore = document.querySelector('.btn--scroll-to');
 const navLinks = document.querySelector('.nav__links');
 const tabsAll = document.querySelector('.operations__tab-container');
-const nav = document.querySelector(".nav");
-const header = document.querySelector(".header");
-const sections = document.querySelectorAll(".section");
-
-
+const nav = document.querySelector('.nav');
+const header = document.querySelector('.header');
+const sections = document.querySelectorAll('.section');
+const images=document.querySelectorAll("img[data-src]");
 const openModal = function () {
   modal.classList.remove('hidden');
   overlay.classList.remove('hidden');
@@ -41,7 +40,7 @@ document.addEventListener('keydown', function (e) {
 buttonLearnMore.addEventListener('click', function () {
   section1.scrollIntoView({
     behavior: 'smooth',
-    block: 'start'
+    block: 'start',
   });
 });
 
@@ -55,13 +54,11 @@ buttonLearnMore.addEventListener('click', function () {
 // });
 navLinks.addEventListener('click', function (e) {
   e.preventDefault();
-  document
-    .querySelector(e.target.getAttribute('href')) ?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+  document.querySelector(e.target.getAttribute('href'))?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  });
 });
-
 
 //tabs
 tabsAll.addEventListener('click', function (e) {
@@ -77,67 +74,111 @@ tabsAll.addEventListener('click', function (e) {
   [...tabsAll.parentElement.children].forEach(function (el) {
     el.classList.remove('operations__content--active');
   });
-  const clickedContent = tabsAll.parentElement.querySelector(`.operations__content--${newActiveNumber}`)
-  clickedContent.classList.add("operations__content--active")
+  const clickedContent = tabsAll.parentElement.querySelector(
+    `.operations__content--${newActiveNumber}`
+  );
+  clickedContent.classList.add('operations__content--active');
 });
 
 //navlink opacity
 const handleOverNav = function (e) {
-  if (e.target.classList.contains("nav__link")) {
+  if (e.target.classList.contains('nav__link')) {
     const link = e.target;
-    const allLinks = link.closest(".nav").querySelectorAll(".nav__link ")
-    const logo = link.closest('.nav').querySelector(".nav__logo")
-    allLinks.forEach(function (li) {
-      if (li !== link) li.style.opacity = this
-    })
-    logo.style.opacity = this
+    const allLinks = link.closest('.nav').querySelectorAll('.nav__link ');
+    const logo = link.closest('.nav').querySelector('.nav__logo');
+    allLinks.forEach(li => {
+      if (li !== link) {
+        li.style.opacity = this;
+      }
+    });
+    logo.style.opacity = this;
   }
-}
+};
 
-nav.addEventListener("mouseover", handleOverNav.bind(.5));
-nav.addEventListener("mouseout", handleOverNav.bind(1));
+nav.addEventListener('mouseover', handleOverNav.bind(0.5));
+nav.addEventListener('mouseout', handleOverNav.bind(1));
 
 //sticky nav
 const stickyNav = function (entries, observer) {
   const entry = entries[0];
   if (!entry.isIntersecting) nav.classList.add('sticky');
-  else nav.classList.remove('sticky')
-}
-
-
+  else nav.classList.remove('sticky');
+};
 
 const headerObserver = new IntersectionObserver(stickyNav, {
   root: null,
   threshold: 0,
-  rootMargin: `-${nav.getBoundingClientRect().height}px`
-})
-headerObserver.observe(header)
-
-
+  rootMargin: `-${nav.getBoundingClientRect().height}px`,
+});
+headerObserver.observe(header);
 
 //loading sections
 const sectionLoaderCallBack = function (entries, observer) {
   const entry = entries[0];
-  console.log(entry);
-  if (!entry.isIntersecting) return
+  if (!entry.isIntersecting) return;
   entry.target.classList.remove('section--hidden');
-  observer.unobserve(entry.target)
-  
-  
-  
-}
-
+  observer.unobserve(entry.target);
+};
 
 const sectionLoader = new IntersectionObserver(sectionLoaderCallBack, {
   root: null,
-  threshold: .10
-})
+  threshold: 0.1,
+});
 sections.forEach(function (sec) {
   sectionLoader.observe(sec);
-  sec.classList.add('section--hidden')
+  // sec.classList.add('section--hidden');
+});
+
+
+//lazy images
+
+const imageLoaderCallBack = function (entries, observer) {
+  const entry = entries[0];
+  if (!entry.isIntersecting) return;
+  entry.target.src=entry.target.dataset.src;
+  entry.target.addEventListener("load",function(){
+    entry.target.classList.remove("lazy-img");
+  })
+  observer.unobserve(entry.target);
+
+};
+
+const imageLoader = new IntersectionObserver(imageLoaderCallBack, {
+  root: null,
+  threshold: 0.3,
+});
+
+images.forEach(function(img){
+  imageLoader.observe(img);
 })
 
+//sliding
 
+const slides=document.querySelectorAll(".slide")
+const betnLeft=document.querySelector(".slider__btn--left");
+const betnRightt=document.querySelector(".slider__btn--right");
+let currSlide=0;
+slides.forEach((sl,i)=>{
+  sl.style.transform=`translateX(${100*i}%)`
+})
+
+betnRightt.addEventListener("click", function(e){
+  if(currSlide==3) return
+  currSlide++
+  e.preventDefault();
+  slides.forEach((sl,i)=>{
+    sl.style.transform=`translateX(${100*(i-currSlide)}%)` 
+  })
+})
+
+betnLeft.addEventListener("click", function(e){
+  if(currSlide==0) return
+  currSlide--
+  e.preventDefault();
+  slides.forEach((sl,i)=>{
+    sl.style.transform=`translateX(${100*(i-currSlide)}%)` 
+  })
+})
 
 
 // const message = document.createElement('div');
